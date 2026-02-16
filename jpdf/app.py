@@ -145,5 +145,5 @@ def cleanup(job_id):
 
 if __name__ == '__main__':
     print("🚀 JPDF Web App 시작")
-    print("   http://localhost:3000")
-    app.run(debug=True, host='0.0.0.0', port=3000)
+    print("   http://localhost:5000")
+    app.run(debug=True, host='0.0.0.0', port=5000)

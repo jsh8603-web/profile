@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ScrollReveal, Skeleton } from '@/components/ui';
@@ -18,10 +18,10 @@ function BlogContent() {
   const [category, setCategory] = useState(initialCategory);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const lastDocRef = useRef<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [hasMore, setHasMore] = useState(false);
 
-  const loadPosts = useCallback(async (cat: string, append = false) => {
+  const loadPosts = async (cat: string, append = false) => {
     if (append) setLoadingMore(true);
     else setLoading(true);
 
@@ -30,11 +30,11 @@ function BlogContent() {
         category: cat || undefined,
         publishedOnly: true,
         pageSize: 9,
-        lastDoc: append ? lastDoc || undefined : undefined,
+        lastDoc: append ? lastDocRef.current || undefined : undefined,
       });
 
       setPosts(prev => append ? [...prev, ...result.posts] : result.posts);
-      setLastDoc(result.lastVisible);
+      lastDocRef.current = result.lastVisible;
       setHasMore(result.hasMore);
     } catch (err) {
       console.error('Failed to load posts:', err);
@@ -42,15 +42,15 @@ function BlogContent() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [lastDoc]);
+  };
 
   useEffect(() => {
     loadPosts(category);
-  }, [category, loadPosts]);
+  }, [category]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCategoryChange = (cat: string) => {
     setCategory(cat);
-    setLastDoc(null);
+    lastDocRef.current = null;
   };
 
   return (

@@ -1,9 +1,26 @@
-# JPDF v1.1 - 의존성
-flask>=2.3.0
-pymupdf>=1.23.0
-opencv-python>=4.8.0
+# Noterang - NotebookLM Automation Suite
+# Usage: pip install -r requirements.txt
+
+# === Core Dependencies ===
+notebooklm-mcp-cli>=0.2.14
+playwright>=1.40.0
+pyotp>=2.9.0
 python-pptx>=0.6.21
+PyMuPDF>=1.23.0
 requests>=2.31.0
 python-dotenv>=1.0.0
-numpy>=1.24.0
-werkzeug>=2.3.0
+deep-translator>=1.11.0
+pdfplumber>=0.10.0
+pdf2image>=1.16.0
+Pillow>=10.2.0
+
+# === Webapp (Streamlit + PaddleOCR) ===
+# streamlit>=1.31.0
+# paddlepaddle>=2.5.0
+# paddleocr>=2.7.0
+# numpy>=1.24.0
+
+# === JPDF (Flask) ===
+# flask>=2.3.0
+# opencv-python>=4.8.0
+# werkzeug>=2.3.0

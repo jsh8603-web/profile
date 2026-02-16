@@ -1,0 +1,38 @@
+{
+  "download_dir": "G:/내 드라이브/notebooklm",
+  "apify_api_key": "",
+  "notebooklm_app_password": "",
+  "timeout_slides": 600,
+  "timeout_research": 120,
+  "timeout_download": 60,
+  "timeout_login": 120,
+  "browser_headless": false,
+  "browser_viewport_width": 1920,
+  "browser_viewport_height": 1080,
+  "default_language": "ko",
+  "debug": false,
+  "save_screenshots": true,
+  "skills": {
+    "nlm_to_web": {
+      "description": "이미 다운로드된 PDF → 분석 → 웹 자료실 등록 (브라우저 불필요)",
+      "script": "nlm_to_web.py",
+      "triggers": ["nlm_to_web", "자료실 등록", "자료실에 올려", "pdf 등록", "pdf 올려", "웹에 등록"],
+      "requires_browser": false,
+      "typical_duration": "5-10초",
+      "verified": "2026-02-06"
+    },
+    "full_pipeline": {
+      "description": "NotebookLM 노트북 생성 → 소스 수집 → 슬라이드 → PDF → 분석 → 자료실 등록",
+      "script": "run_pipeline.py",
+      "triggers": ["노트랑", "noterang", "슬라이드 만들어", "ppt 만들어", "노트북 만들어"],
+      "requires_browser": true,
+      "typical_duration": "10-12분",
+      "verified": "2026-02-06",
+      "proven_results": {
+        "아킬레스건염": {"slides": 15, "sources": 20, "duration": 707, "doc_id": "iUsBGEJQUI6M6EPGQ8GT"},
+        "족모지통풍관절염": {"slides": 15, "sources": 26, "duration": 676, "doc_id": "74GDt4g9inyJUMujGkh0"},
+        "무릎 골연화증": {"slides": 15, "sources": 29, "duration": 743, "doc_id": "KXE1QVIJQhh1TgXfmX83"}
+      }
+    }
+  }
+}

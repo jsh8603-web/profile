@@ -558,13 +558,20 @@ async def run_notebooklm() -> Optional[Path]:
                 }''')
 
                 if prompt_box:
+                    # 오늘 날짜 자동 주입
+                    today = datetime.now().strftime("%Y.%m.%d")
+                    today_kr = datetime.now().strftime("%Y년 %m월 %d일")
+                    date_instruction = f"\n\n[날짜]\n- 슬라이드에 표시할 날짜: {today} ({today_kr})\n- 반드시 위 날짜를 사용할 것 (다른 날짜 사용 금지)"
+                    design_prompt = FINANCE_DESIGN_PROMPT + date_instruction
+                    print(f"  날짜 주입: {today}")
+
                     await coord_click(page, prompt_box, f"오버레이 textarea (ph={prompt_box.get('ph','')})")
                     await asyncio.sleep(0.3)
                     await page.keyboard.press('Control+A')
                     await asyncio.sleep(0.1)
-                    await page.keyboard.type(FINANCE_DESIGN_PROMPT, delay=5)
+                    await page.keyboard.type(design_prompt, delay=5)
                     await asyncio.sleep(1)
-                    print(f"  ✓ 디자인 프롬프트 입력 ({len(FINANCE_DESIGN_PROMPT)}자)")
+                    print(f"  ✓ 디자인 프롬프트 입력 ({len(design_prompt)}자)")
                 else:
                     print("  ⚠️ 프롬프트 textarea 없음 (기본 디자인)")
 
@@ -919,8 +926,7 @@ async def post_to_admin(pdf_path: Path, analysis: Dict[str, Any]):
         else:
             print(f"  ⚠️ PDF 업로드 실패: {upload_resp.status_code} {upload_resp.text[:200]}")
 
-    # ── 3. Firestore: 포스트 문서 생성 ──
-    print("  3) Firestore 포스트 생성...")
+    # ── 3. Firestore: 동일 slug 기존 포스트 확인 → 업데이트 또는 생성 ──
     now = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     firestore_url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/posts"
 
@@ -930,30 +936,84 @@ async def post_to_admin(pdf_path: Path, analysis: Dict[str, Any]):
     def ts_val(t): return {"timestampValue": t}
     def arr_val(items): return {"arrayValue": {"values": items}}
 
-    doc_fields = {
-        "title": str_val(POST_TITLE),
-        "slug": str_val(POST_SLUG),
-        "excerpt": str_val(POST_EXCERPT),
-        "content": str_val(content[:15000]),
-        "category": str_val(POST_CATEGORY),
-        "tags": arr_val([str_val(t) for t in tags]),
-        "coverImageUrl": str_val(""),
-        "published": bool_val(True),
-        "publishedAt": ts_val(now),
-        "createdAt": ts_val(now),
-        "updatedAt": ts_val(now),
-        "authorName": str_val("Sehoon Jang"),
-        "commentCount": int_val(0),
-        "viewCount": int_val(0),
-    }
-    if attachment_url:
-        doc_fields["attachmentUrl"] = str_val(attachment_url)
-        doc_fields["attachmentName"] = str_val(attachment_name)
+    # 기존 포스트 조회
+    existing_doc_path = None
+    try:
+        query_url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents:runQuery"
+        q_resp = requests.post(query_url, json={
+            "structuredQuery": {
+                "from": [{"collectionId": "posts"}],
+                "where": {"fieldFilter": {"field": {"fieldPath": "slug"}, "op": "EQUAL", "value": {"stringValue": POST_SLUG}}},
+                "limit": 1,
+            }
+        }, headers={'Authorization': f'Bearer {id_token}', 'Content-Type': 'application/json'}, timeout=30)
+        if q_resp.status_code == 200:
+            for r in q_resp.json():
+                doc = r.get("document")
+                if doc and doc.get("name"):
+                    existing_doc_path = doc["name"]
+    except Exception as e:
+        print(f"  ⚠️ 기존 포스트 조회 실패: {e}")
 
-    fs_resp = requests.post(firestore_url, json={"fields": doc_fields}, headers={
-        'Authorization': f'Bearer {id_token}',
-        'Content-Type': 'application/json',
-    }, timeout=60)
+    if existing_doc_path:
+        # ── 기존 포스트 업데이트 ──
+        existing_doc_id = existing_doc_path.split('/')[-1]
+        print(f"  3) 기존 포스트 업데이트 (ID: {existing_doc_id})...")
+        update_fields = {
+            "title": str_val(POST_TITLE),
+            "excerpt": str_val(POST_EXCERPT),
+            "content": str_val(content[:15000]),
+            "category": str_val(POST_CATEGORY),
+            "tags": arr_val([str_val(t) for t in tags]),
+            "published": bool_val(True),
+            "publishedAt": ts_val(now),
+            "updatedAt": ts_val(now),
+            "authorName": str_val("Sehoon Jang"),
+        }
+        if attachment_url:
+            update_fields["attachmentUrl"] = str_val(attachment_url)
+            update_fields["attachmentName"] = str_val(attachment_name)
+
+        mask = "&".join(f"updateMask.fieldPaths={k}" for k in update_fields)
+        patch_url = f"https://firestore.googleapis.com/v1/{existing_doc_path}?{mask}"
+        fs_resp = requests.patch(patch_url, json={"fields": update_fields}, headers={
+            'Authorization': f'Bearer {id_token}', 'Content-Type': 'application/json',
+        }, timeout=60)
+
+        if fs_resp.status_code == 200:
+            print(f"  ✓ 포스트 업데이트 완료! (ID: {existing_doc_id})")
+            print(f"  ✓ URL: {ADMIN_URL}/blog/{POST_SLUG}")
+        else:
+            print(f"  ❌ 업데이트 실패: {fs_resp.status_code} → 새로 생성 시도")
+            existing_doc_path = None  # 폴백: 새 문서 생성
+
+    if not existing_doc_path:
+        # ── 새 포스트 생성 ──
+        print("  3) Firestore 포스트 생성...")
+        doc_fields = {
+            "title": str_val(POST_TITLE),
+            "slug": str_val(POST_SLUG),
+            "excerpt": str_val(POST_EXCERPT),
+            "content": str_val(content[:15000]),
+            "category": str_val(POST_CATEGORY),
+            "tags": arr_val([str_val(t) for t in tags]),
+            "coverImageUrl": str_val(""),
+            "published": bool_val(True),
+            "publishedAt": ts_val(now),
+            "createdAt": ts_val(now),
+            "updatedAt": ts_val(now),
+            "authorName": str_val("Sehoon Jang"),
+            "commentCount": int_val(0),
+            "viewCount": int_val(0),
+        }
+        if attachment_url:
+            doc_fields["attachmentUrl"] = str_val(attachment_url)
+            doc_fields["attachmentName"] = str_val(attachment_name)
+
+        fs_resp = requests.post(firestore_url, json={"fields": doc_fields}, headers={
+            'Authorization': f'Bearer {id_token}',
+            'Content-Type': 'application/json',
+        }, timeout=60)
 
     if fs_resp.status_code == 200:
         doc_name = fs_resp.json().get('name', '')

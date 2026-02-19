@@ -228,7 +228,50 @@ class AdminPoster:
             print(f"  ⚠️ PDF 업로드 실패: {upload_resp.status_code} {upload_resp.text[:200]}")
             return "", ""
 
-    # ── Firestore 문서 생성 ─────────────────────────
+    # ── Firestore: slug 중복 확인 ───────────────────
+
+    def _find_existing_post(self, id_token: str) -> str | None:
+        """동일 slug를 가진 기존 포스트의 document path를 반환. 없으면 None."""
+        import requests
+
+        query_url = (
+            f"https://firestore.googleapis.com/v1/projects/{self.cfg.project_id}"
+            f"/databases/(default)/documents:runQuery"
+        )
+        body = {
+            "structuredQuery": {
+                "from": [{"collectionId": "posts"}],
+                "where": {
+                    "fieldFilter": {
+                        "field": {"fieldPath": "slug"},
+                        "op": "EQUAL",
+                        "value": {"stringValue": self.cfg.slug},
+                    }
+                },
+                "limit": 1,
+            }
+        }
+        try:
+            resp = requests.post(
+                query_url,
+                json=body,
+                headers={
+                    "Authorization": f"Bearer {id_token}",
+                    "Content-Type": "application/json",
+                },
+                timeout=30,
+            )
+            if resp.status_code == 200:
+                results = resp.json()
+                for r in results:
+                    doc = r.get("document")
+                    if doc and doc.get("name"):
+                        return doc["name"]  # full path
+        except Exception as e:
+            print(f"  ⚠️ 기존 포스트 조회 실패: {e}")
+        return None
+
+    # ── Firestore 문서 생성/업데이트 ─────────────────
 
     async def _create_post(
         self,
@@ -240,9 +283,8 @@ class AdminPoster:
     ) -> dict[str, Any]:
         import requests
 
-        print("  3) Firestore 포스트 생성...")
         now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.000Z")
-        firestore_url = (
+        base_url = (
             f"https://firestore.googleapis.com/v1/projects/{self.cfg.project_id}"
             f"/databases/(default)/documents/posts"
         )
@@ -261,6 +303,56 @@ class AdminPoster:
 
         def arr_val(items):
             return {"arrayValue": {"values": items}}
+
+        # 동일 slug 기존 포스트 확인
+        existing_doc_path = self._find_existing_post(id_token)
+
+        if existing_doc_path:
+            # ── 기존 포스트 업데이트 ──
+            doc_id = existing_doc_path.split("/")[-1]
+            print(f"  3) 기존 포스트 업데이트 (ID: {doc_id})...")
+
+            update_fields: dict[str, Any] = {
+                "title": str_val(self.cfg.title),
+                "excerpt": str_val(self.cfg.excerpt),
+                "content": str_val(content[:15000]),
+                "category": str_val(self.cfg.category),
+                "tags": arr_val([str_val(t) for t in tags]),
+                "published": bool_val(True),
+                "publishedAt": ts_val(now),
+                "updatedAt": ts_val(now),
+                "authorName": str_val(self.cfg.author_name),
+            }
+            if attachment_url:
+                update_fields["attachmentUrl"] = str_val(attachment_url)
+                update_fields["attachmentName"] = str_val(attachment_name)
+
+            update_url = f"https://firestore.googleapis.com/v1/{existing_doc_path}"
+            mask_params = "&".join(f"updateMask.fieldPaths={k}" for k in update_fields)
+            update_url = f"{update_url}?{mask_params}"
+
+            fs_resp = requests.patch(
+                update_url,
+                json={"fields": update_fields},
+                headers={
+                    "Authorization": f"Bearer {id_token}",
+                    "Content-Type": "application/json",
+                },
+                timeout=60,
+            )
+
+            if fs_resp.status_code == 200:
+                print(f"  ✓ 포스트 업데이트 완료! (ID: {doc_id})")
+                print(f"  ✓ URL: {self.cfg.admin_url}/blog/{self.cfg.slug}")
+                return {"method": "rest_api_update", "doc_id": doc_id, "slug": self.cfg.slug}
+            else:
+                print(f"  ❌ 업데이트 실패: {fs_resp.status_code}")
+                print(f"  응답: {fs_resp.text[:300]}")
+                # 업데이트 실패 시 새로 생성 시도
+                print("  → 새 포스트 생성으로 폴백...")
+
+        # ── 새 포스트 생성 ──
+        print("  3) Firestore 포스트 생성...")
 
         doc_fields: dict[str, Any] = {
             "title": str_val(self.cfg.title),
@@ -283,7 +375,7 @@ class AdminPoster:
             doc_fields["attachmentName"] = str_val(attachment_name)
 
         fs_resp = requests.post(
-            firestore_url,
+            base_url,
             json={"fields": doc_fields},
             headers={
                 "Authorization": f"Bearer {id_token}",

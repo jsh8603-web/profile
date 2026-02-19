@@ -458,8 +458,15 @@ class Pipeline:
                     await ss(page, "04_slide_edit_open", debug_dir)
                     await print_els(page, "body", "맞춤설정 열림")
 
-                    # 프롬프트 입력
-                    if self.cfg.design_prompt:
+                    # 프롬프트 입력 (오늘 날짜 자동 주입)
+                    design_prompt = self.cfg.design_prompt
+                    if design_prompt:
+                        today = datetime.now().strftime("%Y.%m.%d")
+                        today_kr = datetime.now().strftime("%Y년 %m월 %d일")
+                        date_instruction = f"\n\n[날짜]\n- 슬라이드에 표시할 날짜: {today} ({today_kr})\n- 반드시 위 날짜를 사용할 것 (다른 날짜 사용 금지)"
+                        design_prompt = design_prompt + date_instruction
+                        print(f"  날짜 주입: {today}")
+
                         prompt_box = await page.evaluate(
                             """() => {
                             const pane = document.querySelector('.cdk-overlay-pane');
@@ -481,7 +488,7 @@ class Pipeline:
                             await asyncio.sleep(0.3)
                             await page.keyboard.press("Control+A")
                             await asyncio.sleep(0.1)
-                            await page.keyboard.type(self.cfg.design_prompt, delay=5)
+                            await page.keyboard.type(design_prompt, delay=5)
                             await asyncio.sleep(1)
                             print(f"  ✓ 디자인 프롬프트 입력 ({len(self.cfg.design_prompt)}자)")
                         else:

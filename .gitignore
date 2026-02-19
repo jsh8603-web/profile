@@ -1,20 +1,10 @@
-# 민감 정보
-.env.local
-.env
-
-# Python
-__pycache__/
-*.pyc
-
-# Node
 node_modules/
 .next/
+out/
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
 next-env.d.ts
-
-# 테스트 파일
-*.pptx
-*.pdf
-*.png
-
-# IDE / OS
-.claude/
+.vercel
+.firebase/

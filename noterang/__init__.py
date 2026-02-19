@@ -153,6 +153,12 @@ from .poster import (
     PostConfig,
 )
 
+# JPDF (PDF → 편집 가능 PPTX)
+from .jpdf import (
+    JPDF,
+    convert as jpdf_convert,
+)
+
 # CDK Utils (NotebookLM Angular overlay 우회)
 from .cdk_utils import (
     coord_click,
@@ -263,6 +269,10 @@ __all__ = [
     # Poster
     "AdminPoster",
     "PostConfig",
+
+    # JPDF
+    "JPDF",
+    "jpdf_convert",
 
     # CDK Utils
     "coord_click",

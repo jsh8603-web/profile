@@ -54,10 +54,23 @@ export interface StatItem {
   label: string;
 }
 
+export interface Milestone {
+  year: string;
+  company: string;
+  metric: string;
+  achievement: string;
+  isMba?: boolean;
+}
+
+export interface CompetencyGroup {
+  title: string;
+  items: { label: string; evidence: string }[];
+}
+
 export interface ChartData {
-  budgetHistory: { year: string; budget: number }[];
+  milestones: Milestone[];
   industryExperience: { name: string; years: number }[];
-  skillRadar: { skill: string; level: number }[];
+  competencyGroups: CompetencyGroup[];
 }
 
 export interface ContactInfo {

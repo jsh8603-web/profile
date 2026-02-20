@@ -270,27 +270,41 @@ export default function AdminProfilePage() {
       {/* Charts Tab */}
       {activeTab === 'charts' && (
         <div className="space-y-8">
-          {/* Budget History */}
+          {/* Milestones */}
           <div className="card-flat p-6">
-            <h3 className="text-sm font-semibold text-[#1D1D1F] mb-3">Budget History</h3>
-            {profile.chartData.budgetHistory.map((item, i) => (
-              <div key={i} className="flex gap-2 mb-2">
+            <h3 className="text-sm font-semibold text-[#1D1D1F] mb-3">Career Milestones</h3>
+            {profile.chartData.milestones.map((item, i) => (
+              <div key={i} className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-[#E8E8ED] last:border-0">
                 <input value={item.year} onChange={(e) => {
-                  const updated = [...profile.chartData.budgetHistory]; updated[i] = { ...item, year: e.target.value };
-                  updateField('chartData', { ...profile.chartData, budgetHistory: updated });
-                }} placeholder="Year" className="w-24 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
-                <input type="number" value={item.budget} onChange={(e) => {
-                  const updated = [...profile.chartData.budgetHistory]; updated[i] = { ...item, budget: Number(e.target.value) };
-                  updateField('chartData', { ...profile.chartData, budgetHistory: updated });
-                }} placeholder="Budget" className="w-32 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                  const updated = [...profile.chartData.milestones]; updated[i] = { ...item, year: e.target.value };
+                  updateField('chartData', { ...profile.chartData, milestones: updated });
+                }} placeholder="Year" className="w-20 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                <input value={item.company} onChange={(e) => {
+                  const updated = [...profile.chartData.milestones]; updated[i] = { ...item, company: e.target.value };
+                  updateField('chartData', { ...profile.chartData, milestones: updated });
+                }} placeholder="Company" className="w-36 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                <input value={item.metric} onChange={(e) => {
+                  const updated = [...profile.chartData.milestones]; updated[i] = { ...item, metric: e.target.value };
+                  updateField('chartData', { ...profile.chartData, milestones: updated });
+                }} placeholder="Metric (e.g. ₩60B/mo)" className="w-32 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                <input value={item.achievement} onChange={(e) => {
+                  const updated = [...profile.chartData.milestones]; updated[i] = { ...item, achievement: e.target.value };
+                  updateField('chartData', { ...profile.chartData, milestones: updated });
+                }} placeholder="Achievement" className="flex-1 min-w-[160px] px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                <label className="flex items-center gap-1.5 text-xs text-[#86868B]">
+                  <input type="checkbox" checked={!!item.isMba} onChange={(e) => {
+                    const updated = [...profile.chartData.milestones]; updated[i] = { ...item, isMba: e.target.checked };
+                    updateField('chartData', { ...profile.chartData, milestones: updated });
+                  }} /> MBA
+                </label>
                 <button onClick={() => {
-                  updateField('chartData', { ...profile.chartData, budgetHistory: profile.chartData.budgetHistory.filter((_, j) => j !== i) });
+                  updateField('chartData', { ...profile.chartData, milestones: profile.chartData.milestones.filter((_, j) => j !== i) });
                 }} className="p-2 text-red-400"><Trash2 size={14} /></button>
               </div>
             ))}
             <button onClick={() => {
-              updateField('chartData', { ...profile.chartData, budgetHistory: [...profile.chartData.budgetHistory, { year: '', budget: 0 }] });
-            }} className="text-xs text-[#0071E3] hover:underline">+ Add entry</button>
+              updateField('chartData', { ...profile.chartData, milestones: [...profile.chartData.milestones, { year: '', company: '', metric: '', achievement: '' }] });
+            }} className="text-xs text-[#0071E3] hover:underline">+ Add milestone</button>
           </div>
 
           {/* Industry Experience */}
@@ -316,27 +330,51 @@ export default function AdminProfilePage() {
             }} className="text-xs text-[#0071E3] hover:underline">+ Add entry</button>
           </div>
 
-          {/* Skill Radar */}
+          {/* Competency Groups */}
           <div className="card-flat p-6">
-            <h3 className="text-sm font-semibold text-[#1D1D1F] mb-3">Skills</h3>
-            {profile.chartData.skillRadar.map((item, i) => (
-              <div key={i} className="flex gap-2 mb-2">
-                <input value={item.skill} onChange={(e) => {
-                  const updated = [...profile.chartData.skillRadar]; updated[i] = { ...item, skill: e.target.value };
-                  updateField('chartData', { ...profile.chartData, skillRadar: updated });
-                }} placeholder="Skill" className="flex-1 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
-                <input type="number" min="0" max="100" value={item.level} onChange={(e) => {
-                  const updated = [...profile.chartData.skillRadar]; updated[i] = { ...item, level: Number(e.target.value) };
-                  updateField('chartData', { ...profile.chartData, skillRadar: updated });
-                }} placeholder="Level" className="w-24 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+            <h3 className="text-sm font-semibold text-[#1D1D1F] mb-3">Competency Groups</h3>
+            {profile.chartData.competencyGroups.map((group, gi) => (
+              <div key={gi} className="mb-6 pb-6 border-b border-[#E8E8ED] last:border-0">
+                <div className="flex gap-2 mb-3">
+                  <input value={group.title} onChange={(e) => {
+                    const updated = [...profile.chartData.competencyGroups]; updated[gi] = { ...group, title: e.target.value };
+                    updateField('chartData', { ...profile.chartData, competencyGroups: updated });
+                  }} placeholder="Group title (e.g. Finance Core)" className="flex-1 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm font-medium" />
+                  <button onClick={() => {
+                    updateField('chartData', { ...profile.chartData, competencyGroups: profile.chartData.competencyGroups.filter((_, j) => j !== gi) });
+                  }} className="p-2 text-red-400"><Trash2 size={14} /></button>
+                </div>
+                {group.items.map((item, ii) => (
+                  <div key={ii} className="flex gap-2 mb-2 ml-4">
+                    <input value={item.label} onChange={(e) => {
+                      const updated = [...profile.chartData.competencyGroups];
+                      const items = [...group.items]; items[ii] = { ...item, label: e.target.value };
+                      updated[gi] = { ...group, items };
+                      updateField('chartData', { ...profile.chartData, competencyGroups: updated });
+                    }} placeholder="Label" className="w-36 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                    <input value={item.evidence} onChange={(e) => {
+                      const updated = [...profile.chartData.competencyGroups];
+                      const items = [...group.items]; items[ii] = { ...item, evidence: e.target.value };
+                      updated[gi] = { ...group, items };
+                      updateField('chartData', { ...profile.chartData, competencyGroups: updated });
+                    }} placeholder="Evidence" className="flex-1 px-3 py-2 rounded-xl border border-[#D2D2D7] text-sm" />
+                    <button onClick={() => {
+                      const updated = [...profile.chartData.competencyGroups];
+                      updated[gi] = { ...group, items: group.items.filter((_, j) => j !== ii) };
+                      updateField('chartData', { ...profile.chartData, competencyGroups: updated });
+                    }} className="p-2 text-red-400"><Trash2 size={14} /></button>
+                  </div>
+                ))}
                 <button onClick={() => {
-                  updateField('chartData', { ...profile.chartData, skillRadar: profile.chartData.skillRadar.filter((_, j) => j !== i) });
-                }} className="p-2 text-red-400"><Trash2 size={14} /></button>
+                  const updated = [...profile.chartData.competencyGroups];
+                  updated[gi] = { ...group, items: [...group.items, { label: '', evidence: '' }] };
+                  updateField('chartData', { ...profile.chartData, competencyGroups: updated });
+                }} className="text-xs text-[#0071E3] hover:underline ml-4">+ Add item</button>
               </div>
             ))}
             <button onClick={() => {
-              updateField('chartData', { ...profile.chartData, skillRadar: [...profile.chartData.skillRadar, { skill: '', level: 0 }] });
-            }} className="text-xs text-[#0071E3] hover:underline">+ Add entry</button>
+              updateField('chartData', { ...profile.chartData, competencyGroups: [...profile.chartData.competencyGroups, { title: '', items: [{ label: '', evidence: '' }] }] });
+            }} className="text-xs text-[#0071E3] hover:underline">+ Add group</button>
           </div>
         </div>
       )}

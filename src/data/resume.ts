@@ -92,14 +92,13 @@ export const initialProfile: Profile = {
     },
   ],
   chartData: {
-    budgetHistory: [
-      { year: '2011', budget: 5 },
-      { year: '2013', budget: 12 },
-      { year: '2015', budget: 25 },
-      { year: '2017', budget: 0 },
-      { year: '2019', budget: 45 },
-      { year: '2021', budget: 35 },
-      { year: '2023', budget: 60 },
+    milestones: [
+      { year: '2011', company: 'POSCO PLANTEC', metric: '₩5B/mo', achievement: '태양광 PF · 파이프라인 평가' },
+      { year: '2014', company: 'POSCO', metric: '$1.6B', achievement: '합성가스 PF 모델링' },
+      { year: '2017', company: 'KAIST', metric: 'MBA 3.8', achievement: 'Accounting Focus', isMba: true },
+      { year: '2019', company: 'LG Display', metric: '₩45B/mo', achievement: 'OLED ROI 분석' },
+      { year: '2020', company: 'Hyundai Eng.', metric: '3 PF Deals', achievement: '글로벌 딜 클로징' },
+      { year: '2023', company: 'Coupang', metric: '₩60B/mo', achievement: '프로세스 원가 모델' },
     ],
     industryExperience: [
       { name: 'Logistics', years: 2.5 },
@@ -108,13 +107,32 @@ export const initialProfile: Profile = {
       { name: 'Petrochemical', years: 2 },
       { name: 'Energy', years: 3 },
     ],
-    skillRadar: [
-      { skill: 'FP&A', level: 95 },
-      { skill: 'Financial Modeling', level: 90 },
-      { skill: 'Project Finance', level: 85 },
-      { skill: 'Valuation', level: 85 },
-      { skill: 'Data Analysis', level: 80 },
-      { skill: 'Leadership', level: 80 },
+    competencyGroups: [
+      {
+        title: 'Finance Core',
+        items: [
+          { label: 'FP&A', evidence: '₩60B/월 프로세스 원가 모델 구축 · 2년 운영' },
+          { label: 'Project Finance', evidence: '폴란드 Olefins · 캐나다 MMR 글로벌 PF 클로징' },
+          { label: 'Valuation & M&A', evidence: '₩50B CAPEX ROI + $1.6B 합성가스 FDD' },
+          { label: 'Financial Modeling', evidence: '5개 회사 전 직장 Excel/SAP 모델 활용' },
+        ],
+      },
+      {
+        title: 'Technical',
+        items: [
+          { label: 'SAP', evidence: 'LG Display 주간 운영계획 수정' },
+          { label: 'SQL & BI', evidence: 'Coupang 데이터 추출 · 대시보드 구축' },
+          { label: 'Advanced Excel', evidence: 'PF 모델 · DCF · CAPEX 분석 전 직장' },
+        ],
+      },
+      {
+        title: 'Leadership',
+        items: [
+          { label: 'Team Management', evidence: '4명 팀, 2개 원가 그룹 관리 (Coupang)' },
+          { label: 'Cross-functional', evidence: '주 3회 Operations 리뷰 · C-suite 보고' },
+          { label: 'Deal Coordination', evidence: '국제 PF 딜팀 주도 (Hyundai)' },
+        ],
+      },
     ],
   },
   contact: {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ScrollReveal } from '@/components/ui';
 import Timeline from '@/components/resume/Timeline';
-import { BudgetChart, IndustryChart, SkillChart } from '@/components/resume/Charts';
+import { MilestoneTimeline, IndustryChart, CompetencyCards } from '@/components/resume/Charts';
 import { getProfile } from '@/lib/firebase/firestore';
 import { initialProfile } from '@/data/resume';
 import type { Profile } from '@/lib/types';
@@ -14,7 +14,16 @@ export default function ResumePage() {
 
   useEffect(() => {
     getProfile()
-      .then((data) => { if (data) setProfile(data); })
+      .then((data) => {
+        if (data) setProfile({
+          ...data,
+          chartData: {
+            milestones: data.chartData.milestones ?? initialProfile.chartData.milestones,
+            industryExperience: data.chartData.industryExperience ?? initialProfile.chartData.industryExperience,
+            competencyGroups: data.chartData.competencyGroups ?? initialProfile.chartData.competencyGroups,
+          },
+        });
+      })
       .catch(() => {});
   }, []);
 
@@ -45,12 +54,10 @@ export default function ResumePage() {
           <ScrollReveal>
             <h2 className="text-2xl font-bold text-[#1D1D1F] mb-8">At a Glance</h2>
           </ScrollReveal>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <BudgetChart data={profile.chartData.budgetHistory} />
+          <MilestoneTimeline data={profile.chartData.milestones} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             <IndustryChart data={profile.chartData.industryExperience} />
-          </div>
-          <div className="mt-6">
-            <SkillChart data={profile.chartData.skillRadar} />
+            <CompetencyCards data={profile.chartData.competencyGroups} />
           </div>
         </div>
 

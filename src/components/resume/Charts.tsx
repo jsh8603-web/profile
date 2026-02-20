@@ -1,52 +1,114 @@
 'use client';
 
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { ScrollReveal } from '@/components/ui';
+import { GraduationCap } from 'lucide-react';
 import type { ChartData } from '@/lib/types';
 
 const COLORS = ['#0071E3', '#34C759', '#FF9500', '#AF52DE', '#FF3B30', '#5856D6'];
 
-export function BudgetChart({ data }: { data: ChartData['budgetHistory'] }) {
+export function MilestoneTimeline({ data }: { data: ChartData['milestones'] }) {
+  if (!data || data.length === 0) return null;
   return (
     <ScrollReveal>
       <div className="card p-6 sm:p-8">
-        <h3 className="text-lg font-semibold text-[#1D1D1F] mb-1">Budget Under Management</h3>
-        <p className="text-sm text-[#86868B] mb-6">KRW Billions per month</p>
-        <div className="h-[280px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E8E8ED" vertical={false} />
-              <XAxis
-                dataKey="year"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12, fill: '#86868B' }}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12, fill: '#86868B' }}
-              />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: '12px',
-                  border: '1px solid #E8E8ED',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-                  fontSize: '13px'
-                }}
-                formatter={(value) => [`₩${value}B`, 'Budget']}
-              />
-              <Bar
-                dataKey="budget"
-                fill="#0071E3"
-                radius={[6, 6, 0, 0]}
-                maxBarSize={40}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        <h3 className="text-lg font-semibold text-[#1D1D1F] mb-1">Career Milestones</h3>
+        <p className="text-sm text-[#86868B] mb-6">Key achievements across companies</p>
+
+        {/* Desktop: Horizontal Timeline */}
+        <div className="hidden lg:block">
+          <div className="relative">
+            {/* Horizontal connector line at dot center (h-20=80px above + 8px half-dot) */}
+            <div
+              className="absolute left-[8.33%] right-[8.33%] h-0.5 bg-[#E8E8ED]"
+              style={{ top: '88px' }}
+            />
+            <div className="flex">
+              {data.map((milestone, i) => {
+                const isAbove = i % 2 === 0;
+                return (
+                  <div
+                    key={milestone.year}
+                    className="flex flex-col items-center"
+                    style={{ width: `${100 / data.length}%` }}
+                  >
+                    {/* Above label (h-20 = 80px, flex-end to align bottom to line) */}
+                    <div className="h-20 flex flex-col items-center justify-end pb-2 text-center px-1">
+                      {isAbove && (
+                        <>
+                          <span className="text-xs font-bold text-[#0071E3] leading-tight">{milestone.metric}</span>
+                          <p className="text-[11px] font-medium text-[#1D1D1F] mt-0.5 leading-tight">{milestone.company}</p>
+                          <p className="text-[10px] text-[#86868B] mt-0.5 leading-tight">{milestone.achievement}</p>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Dot */}
+                    <div
+                      className={`relative z-10 w-4 h-4 rounded-full border-2 flex items-center justify-center bg-white ${
+                        milestone.isMba
+                          ? 'border-[#86868B] border-dashed'
+                          : 'border-[#0071E3]'
+                      }`}
+                    >
+                      {milestone.isMba
+                        ? <GraduationCap size={8} className="text-[#86868B]" />
+                        : <div className="w-2 h-2 rounded-full bg-[#0071E3]" />
+                      }
+                    </div>
+
+                    {/* Year */}
+                    <span className="text-[10px] font-bold text-[#86868B] mt-1.5">{milestone.year}</span>
+
+                    {/* Below label (h-20 = 80px, flex-start from top) */}
+                    <div className="h-20 flex flex-col items-center justify-start pt-2 text-center px-1">
+                      {!isAbove && (
+                        <>
+                          <span className="text-xs font-bold text-[#0071E3] leading-tight">{milestone.metric}</span>
+                          <p className="text-[11px] font-medium text-[#1D1D1F] mt-0.5 leading-tight">{milestone.company}</p>
+                          <p className="text-[10px] text-[#86868B] mt-0.5 leading-tight">{milestone.achievement}</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: Vertical Timeline */}
+        <div className="lg:hidden">
+          {data.map((milestone, i) => (
+            <div key={milestone.year} className="flex gap-4">
+              {/* Dot + vertical line */}
+              <div className="flex flex-col items-center flex-shrink-0">
+                <div
+                  className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center bg-white ${
+                    milestone.isMba ? 'border-[#86868B]' : 'border-[#0071E3]'
+                  }`}
+                >
+                  {milestone.isMba
+                    ? <GraduationCap size={7} className="text-[#86868B]" />
+                    : <div className="w-1.5 h-1.5 rounded-full bg-[#0071E3]" />
+                  }
+                </div>
+                {i < data.length - 1 && (
+                  <div className="w-0.5 flex-1 bg-[#E8E8ED] my-1" style={{ minHeight: '36px' }} />
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="pb-5">
+                <span className="text-[10px] font-bold text-[#86868B]">{milestone.year}</span>
+                <p className="text-sm font-bold text-[#0071E3] mt-0.5">{milestone.metric}</p>
+                <p className="text-sm font-medium text-[#1D1D1F]">{milestone.company}</p>
+                <p className="text-xs text-[#86868B] mt-0.5">{milestone.achievement}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </ScrollReveal>
@@ -101,24 +163,48 @@ export function IndustryChart({ data }: { data: ChartData['industryExperience'] 
   );
 }
 
-export function SkillChart({ data }: { data: ChartData['skillRadar'] }) {
+export function CompetencyCards({ data }: { data: ChartData['competencyGroups'] }) {
+  if (!data || data.length === 0) return null;
+  const financeCore = data[0];
+  const rest = data.slice(1);
+
   return (
     <ScrollReveal delay={0.2}>
-      <div className="card p-6 sm:p-8">
+      <div className="card p-6 sm:p-8 h-full">
         <h3 className="text-lg font-semibold text-[#1D1D1F] mb-1">Core Competencies</h3>
-        <p className="text-sm text-[#86868B] mb-6">Proficiency level</p>
-        <div className="space-y-4">
-          {data.map((item) => (
-            <div key={item.skill}>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm font-medium text-[#1D1D1F]">{item.skill}</span>
-                <span className="text-xs font-medium text-[#86868B]">{item.level}%</span>
+        <p className="text-sm text-[#86868B] mb-6">Evidence-based achievements</p>
+
+        {/* Finance Core — full width */}
+        <div>
+          <p className="text-[10px] font-bold text-[#0071E3] uppercase tracking-widest mb-3">
+            {financeCore.title}
+          </p>
+          <div className="space-y-3">
+            {financeCore.items.map((item) => (
+              <div key={item.label}>
+                <span className="text-sm font-semibold text-[#1D1D1F]">{item.label}</span>
+                <p className="text-xs text-[#86868B] mt-0.5 leading-relaxed">{item.evidence}</p>
               </div>
-              <div className="h-2 bg-[#F5F5F7] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#0071E3] rounded-full transition-all duration-1000"
-                  style={{ width: `${item.level}%` }}
-                />
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-[#E8E8ED] my-4" />
+
+        {/* Technical + Leadership — 2 columns */}
+        <div className="grid grid-cols-2 gap-4">
+          {rest.map((group) => (
+            <div key={group.title}>
+              <p className="text-[10px] font-bold text-[#0071E3] uppercase tracking-widest mb-3">
+                {group.title}
+              </p>
+              <div className="space-y-3">
+                {group.items.map((item) => (
+                  <div key={item.label}>
+                    <span className="text-sm font-semibold text-[#1D1D1F]">{item.label}</span>
+                    <p className="text-xs text-[#86868B] mt-0.5 leading-relaxed">{item.evidence}</p>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

@@ -93,12 +93,12 @@ export const initialProfile: Profile = {
   ],
   chartData: {
     milestones: [
-      { year: '2011', company: 'POSCO PLANTEC', metric: '₩5B/mo', achievement: '태양광 PF · 파이프라인 평가' },
-      { year: '2014', company: 'POSCO', metric: '$1.6B', achievement: '합성가스 PF 모델링' },
+      { year: '2011', company: 'POSCO PLANTEC', metric: '₩5B/mo', achievement: 'Solar PF · Pipeline Valuation' },
+      { year: '2014', company: 'POSCO', metric: '$1.6B', achievement: 'Synthetic Gas PF Modeling' },
       { year: '2017', company: 'KAIST', metric: 'MBA 3.8', achievement: 'Accounting Focus', isMba: true },
-      { year: '2019', company: 'LG Display', metric: '₩45B/mo', achievement: 'OLED ROI 분석' },
-      { year: '2020', company: 'Hyundai Eng.', metric: '3 PF Deals', achievement: '글로벌 딜 클로징' },
-      { year: '2023', company: 'Coupang', metric: '₩60B/mo', achievement: '프로세스 원가 모델' },
+      { year: '2019', company: 'LG Display', metric: '₩45B/mo', achievement: 'OLED Factory ROI Analysis' },
+      { year: '2020', company: 'Hyundai Eng.', metric: '3 PF Deals', achievement: 'Global Deal Closing' },
+      { year: '2023', company: 'Coupang', metric: '₩60B/mo', achievement: 'Process Costing Model' },
     ],
     industryExperience: [
       { name: 'Logistics', years: 2.5 },
@@ -111,26 +111,26 @@ export const initialProfile: Profile = {
       {
         title: 'Finance Core',
         items: [
-          { label: 'FP&A', evidence: '₩60B/월 프로세스 원가 모델 구축 · 2년 운영' },
-          { label: 'Project Finance', evidence: '폴란드 Olefins · 캐나다 MMR 글로벌 PF 클로징' },
-          { label: 'Valuation & M&A', evidence: '₩50B CAPEX ROI + $1.6B 합성가스 FDD' },
-          { label: 'Financial Modeling', evidence: '5개 회사 전 직장 Excel/SAP 모델 활용' },
+          { label: 'FP&A', evidence: 'Built ₩60B/mo process costing model · sustained 2+ years' },
+          { label: 'Project Finance', evidence: 'Closed Poland Olefins · Canada MMR global PF deals' },
+          { label: 'Valuation & M&A', evidence: '₩50B CAPEX ROI analysis + $1.6B synthetic gas FDD' },
+          { label: 'Financial Modeling', evidence: 'Excel/SAP models across all 5 prior companies' },
         ],
       },
       {
         title: 'Technical',
         items: [
-          { label: 'SAP', evidence: 'LG Display 주간 운영계획 수정' },
-          { label: 'SQL & BI', evidence: 'Coupang 데이터 추출 · 대시보드 구축' },
-          { label: 'Advanced Excel', evidence: 'PF 모델 · DCF · CAPEX 분석 전 직장' },
+          { label: 'SAP', evidence: 'Weekly operation plan revisions at LG Display' },
+          { label: 'SQL & BI', evidence: 'Data extraction · dashboard build at Coupang' },
+          { label: 'Advanced Excel', evidence: 'PF models · DCF · CAPEX analysis across companies' },
         ],
       },
       {
         title: 'Leadership',
         items: [
-          { label: 'Team Management', evidence: '4명 팀, 2개 원가 그룹 관리 (Coupang)' },
-          { label: 'Cross-functional', evidence: '주 3회 Operations 리뷰 · C-suite 보고' },
-          { label: 'Deal Coordination', evidence: '국제 PF 딜팀 주도 (Hyundai)' },
+          { label: 'Team Management', evidence: 'Team of 4, 2 cost groups at Coupang' },
+          { label: 'Cross-functional', evidence: '3x/week Operations reviews · C-suite reporting' },
+          { label: 'Deal Coordination', evidence: 'Led international PF deal team (Hyundai)' },
         ],
       },
     ],

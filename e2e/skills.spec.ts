@@ -86,11 +86,11 @@ test.describe('Skill Detail Page — FP&A', () => {
     await expect(page.locator('span', { hasText: 'SAP' }).first()).toBeVisible();
   });
 
-  test('back link should navigate to /', async ({ page }) => {
+  test('back link should navigate to /#about', async ({ page }) => {
     const backLink = page.locator('a', { hasText: 'Back' }).first();
     await expect(backLink).toBeVisible();
     await backLink.click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/#about');
   });
 });
 

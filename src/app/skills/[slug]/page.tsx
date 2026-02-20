@@ -68,7 +68,7 @@ export default function SkillDetailPage() {
           transition={{ duration: 0.3 }}
         >
           <Link
-            href="/"
+            href="/#about"
             className="inline-flex items-center gap-1.5 text-sm text-[#86868B] hover:text-[#0071E3] transition-colors mb-8"
           >
             <ArrowLeft size={16} />

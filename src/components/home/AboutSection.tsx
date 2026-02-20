@@ -47,7 +47,7 @@ const COMPETENCIES = [
 
 export default function AboutSection() {
   return (
-    <section className="section-padding">
+    <section id="about" className="section-padding">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <ScrollReveal>
           <p className="section-label mb-4">About</p>

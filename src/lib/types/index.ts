@@ -80,3 +80,21 @@ export interface Profile {
   chartData: ChartData;
   contact: ContactInfo;
 }
+
+export interface RelatedCareer {
+  company: string;
+  period: string;
+  role: string;
+  description: string;
+}
+
+export interface SkillDetail {
+  slug: string;
+  label: string;
+  icon: string;
+  summary: string;
+  description: string;
+  relatedCareers: RelatedCareer[];
+  keyAchievements: string[];
+  tools: string[];
+}

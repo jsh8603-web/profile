@@ -1,0 +1,205 @@
+import type { SkillDetail } from '../lib/types';
+
+export const initialSkills: SkillDetail[] = [
+  {
+    slug: 'fpa',
+    label: 'FP&A',
+    icon: 'TrendingUp',
+    summary: 'Budgeting, forecasting, variance analysis, cost modeling',
+    description: 'Over a decade of hands-on experience in financial planning and analysis, from building process-aligned costing models at Coupang to managing weekly SAP operation plans at LG Display. Specializing in bridging the gap between operational reality and financial reporting.',
+    relatedCareers: [
+      {
+        company: 'Coupang',
+        period: '2023.01 — Present',
+        role: 'Senior Manager, Logistics FP&A',
+        description: 'Managed 2 cost groups with 4 team members, overseeing KRW 60B/month budget across 20,000+ daily workers. Built process-aligned costing model sustained for 2+ years, improving month-end close accuracy. Introduced weekly process-level targets and 3x/week review cadence with Operations.',
+      },
+      {
+        company: 'LG Display',
+        period: '2019.04 — 2020.08',
+        role: 'Manager, Strategy',
+        description: 'FP&A for large-scale OLED manufacturing operations. Managed weekly SAP operation plan revisions and financial reporting cycles.',
+      },
+      {
+        company: 'POSCO PLANTEC',
+        period: '2011.07 — 2014.08',
+        role: 'Associate, Strategy',
+        description: 'Developed pipeline evaluation process with KPI tracking and managerial accounting frameworks for EPC projects.',
+      },
+    ],
+    keyAchievements: [
+      'Built process-aligned costing model sustained 2+ years at Coupang',
+      'Introduced weekly process-level targets with 3x/week Operations review cadence',
+      'Delivered ROI & CAPEX analysis for KRW 50B auto-sortation investment',
+    ],
+    tools: ['SAP', 'Excel (Advanced)', 'SQL', 'BI Dashboards'],
+  },
+  {
+    slug: 'project-financing',
+    label: 'Project Financing',
+    icon: 'Building2',
+    summary: 'PF structuring, global banks, ECAs, deal documentation',
+    description: 'Led global project financing transactions across energy, petrochemical, and infrastructure sectors. Experienced in structuring deals with international banks and Export Credit Agencies (ECAs), from financial modeling to contract documentation.',
+    relatedCareers: [
+      {
+        company: 'Hyundai Engineering',
+        period: '2020.08 — 2022.12',
+        role: 'Senior Manager, Finance',
+        description: 'Led global PF structuring for overseas plants and domestic industrial complexes. Built Excel-based PF models and coordinated with legal teams for contract review. Closed major deals: Poland Olefins (Azoty), Canada Micro Modular Reactor, domestic solar & WtE plants.',
+      },
+      {
+        company: 'POSCO PLANTEC',
+        period: '2011.07 — 2014.08',
+        role: 'Associate, Strategy',
+        description: 'Supported solar PF refinancing by providing operational data to foreign lenders and managing financial documentation.',
+      },
+    ],
+    keyAchievements: [
+      'Closed Poland Olefins (Azoty) project financing with international bank consortium',
+      'Structured Canada Micro Modular Reactor PF deal',
+      'Led domestic solar and Waste-to-Energy plant financing',
+      'Supported solar PF refinancing with foreign lenders',
+    ],
+    tools: ['Excel Financial Modeling', 'Deal Documentation', 'ECA Coordination'],
+  },
+  {
+    slug: 'valuation-ma',
+    label: 'Valuation & M&A',
+    icon: 'BarChart3',
+    summary: 'Financial modeling, FDD, investment appraisal, ROI/CAPEX',
+    description: 'Extensive experience in corporate valuation, M&A support, and investment appraisal. From conducting financial due diligence for billion-dollar acquisitions to evaluating ROI for major capital expenditures across manufacturing and energy sectors.',
+    relatedCareers: [
+      {
+        company: 'Coupang',
+        period: '2023.01 — Present',
+        role: 'Senior Manager, Logistics FP&A',
+        description: 'Delivered comprehensive ROI and CAPEX analysis including KRW 50B auto-sortation investment evaluation for logistics infrastructure expansion.',
+      },
+      {
+        company: 'LG Display',
+        period: '2019.04 — 2020.08',
+        role: 'Manager, Strategy',
+        description: 'Performed ROI analysis for Guangzhou OLED factory — LG Display\'s largest overseas investment at the time.',
+      },
+      {
+        company: 'POSCO',
+        period: '2014.09 — 2016.08',
+        role: 'Manager, Green Energy Business Group',
+        description: 'M&A support including financial due diligence (FDD) for synthetic gas SPC acquisition. Led financial models for synthetic gas projects valued at approximately USD 1.6B.',
+      },
+      {
+        company: 'POSCO PLANTEC',
+        period: '2011.07 — 2014.08',
+        role: 'Associate, Strategy',
+        description: 'M&A and IR support for EPC company acquisition. Provided financial analysis and documentation for corporate transactions.',
+      },
+    ],
+    keyAchievements: [
+      'ROI analysis for KRW 50B auto-sortation investment at Coupang',
+      'Guangzhou OLED factory ROI evaluation — LG Display\'s largest investment',
+      'FDD for synthetic gas SPC acquisition (~USD 1.6B project scope)',
+      'M&A and IR support for EPC company acquisition',
+    ],
+    tools: ['DCF Modeling', 'Comparable Analysis', 'Excel', 'Financial Due Diligence'],
+  },
+  {
+    slug: 'systems',
+    label: 'Systems',
+    icon: 'Database',
+    summary: 'SAP, SQL, BI dashboards, advanced Excel modeling',
+    description: 'Proficient in enterprise systems and data tools that power financial analysis. From SAP-driven operational planning to SQL-based data extraction and BI dashboard development, combining technical capability with financial domain expertise.',
+    relatedCareers: [
+      {
+        company: 'Coupang',
+        period: '2023.01 — Present',
+        role: 'Senior Manager, Logistics FP&A',
+        description: 'Built and maintained process-aligned costing models using advanced Excel. Leveraged SQL and BI dashboards for operational cost analysis across 20,000+ daily workers.',
+      },
+      {
+        company: 'LG Display',
+        period: '2019.04 — 2020.08',
+        role: 'Manager, Strategy',
+        description: 'Managed weekly SAP operation plan revisions for large-scale OLED manufacturing. Integrated SAP data with financial reporting workflows.',
+      },
+    ],
+    keyAchievements: [
+      'Built process-aligned costing model sustained 2+ years using advanced Excel',
+      'Managed weekly SAP operation plans for OLED manufacturing',
+      'Developed SQL-based data extraction for operational cost analysis',
+    ],
+    tools: ['SAP', 'SQL', 'BI Dashboards', 'Advanced Excel', 'VBA'],
+  },
+  {
+    slug: 'leadership',
+    label: 'Leadership',
+    icon: 'Users',
+    summary: 'Team of 4, cross-functional partnering, C-suite reporting',
+    description: 'Experienced people manager and cross-functional leader. Currently managing a team of 4 at Coupang while maintaining regular cadence with Operations leadership. Comfortable presenting to C-suite executives and driving alignment across organizational boundaries.',
+    relatedCareers: [
+      {
+        company: 'Coupang',
+        period: '2023.01 — Present',
+        role: 'Senior Manager, Logistics FP&A',
+        description: 'Managing 2 cost groups with 4 direct team members. Introduced 3x/week review cadence with Operations leadership. Regular C-suite reporting on logistics cost performance and investment decisions.',
+      },
+      {
+        company: 'Hyundai Engineering',
+        period: '2020.08 — 2022.12',
+        role: 'Senior Manager, Finance',
+        description: 'Led cross-functional coordination between finance, legal, and engineering teams for international project financing deals.',
+      },
+    ],
+    keyAchievements: [
+      'Managing team of 4 across 2 cost groups at Coupang',
+      'Established 3x/week cross-functional review cadence with Operations',
+      'Regular C-suite reporting on KRW 60B/month budget performance',
+      'Led cross-functional deal teams for international PF transactions',
+    ],
+    tools: ['Team Management', 'Cross-functional Partnering', 'Executive Reporting'],
+  },
+  {
+    slug: 'industries',
+    label: 'Industries',
+    icon: 'Factory',
+    summary: 'Logistics, Construction, Manufacturing, Petrochemical, Energy',
+    description: 'Diverse industry coverage spanning five major sectors over 11+ years. Each industry has provided unique perspectives on financial management — from high-velocity logistics operations to capital-intensive energy projects.',
+    relatedCareers: [
+      {
+        company: 'Coupang',
+        period: '2023.01 — Present',
+        role: 'Senior Manager, Logistics FP&A',
+        description: 'Logistics sector: Managing cost optimization for one of Korea\'s largest e-commerce logistics networks with 20,000+ daily workers.',
+      },
+      {
+        company: 'Hyundai Engineering',
+        period: '2020.08 — 2022.12',
+        role: 'Senior Manager, Finance',
+        description: 'Construction & Engineering sector: Project financing for overseas plants and domestic industrial complexes.',
+      },
+      {
+        company: 'LG Display',
+        period: '2019.04 — 2020.08',
+        role: 'Manager, Strategy',
+        description: 'Manufacturing sector: FP&A and ROI analysis for large-scale OLED display manufacturing operations.',
+      },
+      {
+        company: 'POSCO',
+        period: '2014.09 — 2016.08',
+        role: 'Manager, Green Energy Business Group',
+        description: 'Petrochemical & Energy sector: Financial models for synthetic gas projects, M&A support, coverage of semiconductor gases, naphtha, LNG, and solar power.',
+      },
+      {
+        company: 'POSCO PLANTEC',
+        period: '2011.07 — 2014.08',
+        role: 'Associate, Strategy',
+        description: 'Energy sector: Solar PF refinancing, pipeline evaluation, and EPC project financial management.',
+      },
+    ],
+    keyAchievements: [
+      '5 industries covered: Logistics, Construction, Manufacturing, Petrochemical, Energy',
+      '11+ years of progressive financial leadership across sectors',
+      'Adaptable financial frameworks applied across diverse operational contexts',
+    ],
+    tools: ['Industry Analysis', 'Sector-specific Financial Modeling', 'Cross-industry Benchmarking'],
+  },
+];

@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard, FileText, MessageCircle, User, ArrowLeft
+  LayoutDashboard, FileText, MessageCircle, User, ArrowLeft, Sparkles
 } from 'lucide-react';
 
 const MENU_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/posts', label: 'Posts', icon: FileText },
   { href: '/admin/comments', label: 'Comments', icon: MessageCircle },
+  { href: '/admin/skills', label: 'Skills', icon: Sparkles },
   { href: '/admin/profile', label: 'Profile', icon: User },
 ];
 

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ScrollReveal } from '@/components/ui';
 import {
   TrendingUp, Building2, BarChart3, Database, Users, Factory
@@ -9,31 +10,37 @@ const COMPETENCIES = [
   {
     icon: TrendingUp,
     label: 'FP&A',
+    slug: 'fpa',
     detail: 'Budgeting, forecasting, variance analysis, cost modeling'
   },
   {
     icon: Building2,
     label: 'Project Financing',
+    slug: 'project-financing',
     detail: 'PF structuring, global banks, ECAs, deal documentation'
   },
   {
     icon: BarChart3,
     label: 'Valuation & M&A',
+    slug: 'valuation-ma',
     detail: 'Financial modeling, FDD, investment appraisal, ROI/CAPEX'
   },
   {
     icon: Database,
     label: 'Systems',
+    slug: 'systems',
     detail: 'SAP, SQL, BI dashboards, advanced Excel modeling'
   },
   {
     icon: Users,
     label: 'Leadership',
+    slug: 'leadership',
     detail: 'Team of 4, cross-functional partnering, C-suite reporting'
   },
   {
     icon: Factory,
     label: 'Industries',
+    slug: 'industries',
     detail: 'Logistics, Construction, Manufacturing, Petrochemical, Energy'
   },
 ];
@@ -68,15 +75,17 @@ export default function AboutSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {COMPETENCIES.map((comp, i) => (
               <ScrollReveal key={comp.label} delay={0.1 + i * 0.05}>
-                <div className="card p-5 h-full">
-                  <comp.icon size={20} className="text-[#0071E3] mb-3" />
-                  <div className="text-sm font-semibold text-[#1D1D1F]">
-                    {comp.label}
+                <Link href={`/skills/${comp.slug}`} className="block h-full">
+                  <div className="card p-5 h-full">
+                    <comp.icon size={20} className="text-[#0071E3] mb-3" />
+                    <div className="text-sm font-semibold text-[#1D1D1F]">
+                      {comp.label}
+                    </div>
+                    <div className="text-xs text-[#86868B] mt-1 leading-relaxed">
+                      {comp.detail}
+                    </div>
                   </div>
-                  <div className="text-xs text-[#86868B] mt-1 leading-relaxed">
-                    {comp.detail}
-                  </div>
-                </div>
+                </Link>
               </ScrollReveal>
             ))}
           </div>

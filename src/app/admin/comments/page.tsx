@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Trash2, MessageCircle } from 'lucide-react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '@/lib/firebase/config';
+import { requireDb } from '@/lib/firebase/config';
 import { deleteComment } from '@/lib/firebase/firestore';
 import { formatDate } from '@/lib/utils/dates';
 import type { Comment } from '@/lib/types';
@@ -20,13 +20,14 @@ export default function AdminCommentsPage() {
   const loadComments = async () => {
     setLoading(true);
     try {
+      const db = requireDb();
       const postsSnap = await getDocs(collection(db, 'posts'));
       const allComments: CommentWithPost[] = [];
 
       for (const postDoc of postsSnap.docs) {
         const postData = postDoc.data();
         const commentsSnap = await getDocs(
-          query(collection(db, 'posts', postDoc.id, 'comments'), orderBy('createdAt', 'desc'))
+          query(collection(requireDb(), 'posts', postDoc.id, 'comments'), orderBy('createdAt', 'desc'))
         );
         commentsSnap.docs.forEach(cDoc => {
           allComments.push({

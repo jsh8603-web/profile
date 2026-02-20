@@ -1,8 +1,8 @@
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from './config';
+import { requireStorage } from './config';
 
 export async function uploadImage(file: File, path: string): Promise<string> {
-  const storageRef = ref(storage, path);
+  const storageRef = ref(requireStorage(), path);
   const snapshot = await uploadBytes(storageRef, file);
   return getDownloadURL(snapshot.ref);
 }

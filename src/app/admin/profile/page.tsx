@@ -7,7 +7,7 @@ import { getProfile, updateProfile } from '@/lib/firebase/firestore';
 import { initialProfile } from '@/data/resume';
 import type { Profile } from '@/lib/types';
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase/config';
+import { requireDb } from '@/lib/firebase/config';
 
 export default function AdminProfilePage() {
   const [profile, setProfile] = useState<Profile>(initialProfile);
@@ -30,7 +30,7 @@ export default function AdminProfilePage() {
     setSaving(true);
     try {
       if (!initialized) {
-        await setDoc(doc(db, 'profile', 'main'), profile);
+        await setDoc(doc(requireDb(), 'profile', 'main'), profile);
         setInitialized(true);
       } else {
         await updateProfile(profile);

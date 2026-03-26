@@ -214,3 +214,14 @@ h1, h2, h3, h4 {
 .admin-sidebar-link.active {
   @apply bg-[#0071E3]/10 text-[#0071E3];
 }
+
+/* ─── React-PDF Overlay Fix ───────────────────────────────────── */
+
+.react-pdf__Page__textContent,
+.react-pdf__Page__annotations {
+  display: none !important;
+}
+
+.react-pdf__Page__canvas {
+  display: block;
+}

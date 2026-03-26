@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ChevronLeft, ChevronRight, Download, Loader2 } from 'lucide-react';
 
@@ -84,6 +84,13 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
             renderTextLayer={false}
             renderAnnotationLayer={false}
             canvasBackground="white"
+            onRenderSuccess={() => {
+              // Force-remove any annotation/text layers that react-pdf may inject
+              const layers = containerRef.current?.querySelectorAll(
+                '.annotationLayer, .textLayer, .react-pdf__Page__annotationLayer, .react-pdf__Page__textLayer'
+              );
+              layers?.forEach((el) => el.remove());
+            }}
           />
         </Document>
       </div>

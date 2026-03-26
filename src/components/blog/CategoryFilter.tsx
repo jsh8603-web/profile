@@ -7,8 +7,9 @@ interface CategoryFilterProps {
 
 const CATEGORIES = [
   { value: '', label: 'All' },
-  { value: 'finance', label: 'Finance' },
-  { value: 'economy', label: 'Economy' },
+  { value: 'investment', label: 'Investment Strategy' },
+  { value: 'analysis', label: 'Financial Analysis' },
+  { value: 'operations', label: 'Operations & HR' },
 ];
 
 export default function CategoryFilter({ selected, onChange }: CategoryFilterProps) {

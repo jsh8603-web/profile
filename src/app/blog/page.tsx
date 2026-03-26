@@ -29,7 +29,7 @@ function BlogContent() {
       const result = await getPosts({
         category: cat || undefined,
         publishedOnly: true,
-        pageSize: 9,
+        pageSize: 12,
         lastDoc: append ? lastDocRef.current || undefined : undefined,
       });
 
@@ -57,12 +57,12 @@ function BlogContent() {
     <div className="section-padding">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <ScrollReveal>
-          <p className="section-label mb-4">Blog</p>
+          <p className="section-label mb-4">Publications</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-[#1D1D1F]">
-            Insights &amp; Analysis
+            Slides &amp; Reports
           </h1>
           <p className="mt-4 text-lg text-[#86868B] max-w-xl">
-            Thoughts on finance, economics, and the intersection of data and decision-making.
+            Investment strategies, financial analysis, and operational insights.
           </p>
         </ScrollReveal>
 
@@ -71,20 +71,20 @@ function BlogContent() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="card-flat p-6">
-                <Skeleton className="h-4 w-20 mb-4" />
-                <Skeleton className="h-6 w-full mb-2" />
-                <Skeleton className="h-6 w-3/4 mb-4" />
-                <Skeleton className="h-4 w-full mb-2" />
-                <Skeleton className="h-4 w-2/3" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="card-flat overflow-hidden">
+                <Skeleton className="h-64 w-full" />
+                <div className="p-5">
+                  <Skeleton className="h-4 w-24 mb-3" />
+                  <Skeleton className="h-6 w-3/4" />
+                </div>
               </div>
             ))}
           </div>
         ) : posts.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {posts.map((post, i) => (
                 <motion.div
                   key={post.id}
@@ -111,7 +111,7 @@ function BlogContent() {
           </>
         ) : (
           <div className="text-center py-20">
-            <p className="text-lg text-[#86868B]">No posts yet.</p>
+            <p className="text-lg text-[#86868B]">No publications yet.</p>
             <p className="text-sm text-[#D2D2D7] mt-2">Check back soon for new content!</p>
           </div>
         )}
@@ -127,11 +127,14 @@ export default function BlogPage() {
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
           <Skeleton className="h-8 w-32 mb-4" />
           <Skeleton className="h-12 w-64 mb-8" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="card-flat p-6">
-                <Skeleton className="h-6 w-full mb-2" />
-                <Skeleton className="h-4 w-3/4" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[1, 2].map((i) => (
+              <div key={i} className="card-flat overflow-hidden">
+                <Skeleton className="h-64 w-full" />
+                <div className="p-5">
+                  <Skeleton className="h-6 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
               </div>
             ))}
           </div>

@@ -1,6 +1,6 @@
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'default' | 'finance' | 'economy' | 'outline';
+  variant?: 'default' | 'finance' | 'economy' | 'investment' | 'analysis' | 'operations' | 'outline';
   className?: string;
 }
 
@@ -9,6 +9,9 @@ export default function Badge({ children, variant = 'default', className = '' }:
     default: 'bg-[#F5F5F7] text-[#1D1D1F]',
     finance: 'bg-[#0071E3]/10 text-[#0071E3]',
     economy: 'bg-emerald-50 text-emerald-700',
+    investment: 'bg-[#0071E3]/10 text-[#0071E3]',
+    analysis: 'bg-emerald-50 text-emerald-700',
+    operations: 'bg-amber-50 text-amber-700',
     outline: 'border border-[#D2D2D7] text-[#86868B]',
   };
 

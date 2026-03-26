@@ -6,7 +6,7 @@ export interface Post {
   title: string;
   excerpt: string;
   content: string;
-  category: 'finance' | 'economy';
+  category: 'finance' | 'economy' | 'investment' | 'analysis' | 'operations';
   tags: string[];
   coverImageUrl: string;
   published: boolean;

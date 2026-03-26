@@ -82,7 +82,7 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
         >
           <Page
             pageNumber={pageNumber}
-            width={containerWidth ? Math.min(containerWidth - 32, 900) : undefined}
+            width={containerWidth ? Math.min(containerWidth - 32, 1350) : undefined}
             renderTextLayer={true}
             renderAnnotationLayer={true}
           />

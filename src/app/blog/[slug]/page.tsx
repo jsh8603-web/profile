@@ -48,7 +48,7 @@ export default function BlogPostPage() {
   if (loading) {
     return (
       <div className="section-padding">
-        <div className="max-w-5xl mx-auto px-5 sm:px-8">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8">
           <Skeleton className="h-8 w-48 mb-6" />
           <Skeleton className="h-12 w-full mb-4" />
           <Skeleton className="h-[500px] w-full" />
@@ -73,7 +73,7 @@ export default function BlogPostPage() {
 
   return (
     <div className="section-padding">
-      <div className="max-w-5xl mx-auto px-5 sm:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8">
         {/* Back link */}
         <motion.div
           initial={{ opacity: 0, x: -10 }}

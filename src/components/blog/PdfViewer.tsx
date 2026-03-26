@@ -6,6 +6,11 @@ import { ChevronLeft, ChevronRight, Download, Loader2 } from 'lucide-react';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+const textLayerStyle = `
+  .react-pdf__Page__textContent { opacity: 0 !important; }
+  .react-pdf__Page__annotations { opacity: 0 !important; }
+`;
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PdfViewerProps {
@@ -31,6 +36,7 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
 
   return (
     <div ref={containerRef} className="flex flex-col items-center">
+      <style>{textLayerStyle}</style>
       {/* Controls */}
       <div className="sticky top-0 z-10 flex items-center gap-4 py-3 px-4 bg-white/90 backdrop-blur-sm border-b border-[#E8E8ED] w-full justify-center">
         <button
@@ -83,8 +89,8 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
           <Page
             pageNumber={pageNumber}
             width={containerWidth ? Math.min(containerWidth - 32, 1350) : undefined}
-            renderTextLayer={true}
-            renderAnnotationLayer={true}
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
           />
         </Document>
       </div>

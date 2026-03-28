@@ -121,7 +121,7 @@ export function IndustryChart({ data }: { data: ChartData['industryExperience'] 
       <div className="card p-6 sm:p-8">
         <h3 className="text-lg font-semibold text-[#1D1D1F] mb-1">Industry Experience</h3>
         <p className="text-sm text-[#86868B] mb-6">Years in each sector</p>
-        <div className="h-[280px] flex items-center justify-center">
+        <div className="h-[280px] flex items-center justify-center relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -149,12 +149,18 @@ export function IndustryChart({ data }: { data: ChartData['industryExperience'] 
               />
             </PieChart>
           </ResponsiveContainer>
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span className="text-2xl font-bold text-[#1D1D1F]">
+              {Math.floor(data.reduce((acc, curr) => acc + curr.years, 0))}+
+            </span>
+            <span className="text-[10px] font-medium text-[#86868B] uppercase tracking-wider">Years Total</span>
+          </div>
         </div>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2">
           {data.map((item, i) => (
             <div key={item.name} className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-              <span className="text-xs text-[#86868B]">{item.name}</span>
+              <span className="text-xs text-[#86868B]">{item.name} ({item.years}y)</span>
             </div>
           ))}
         </div>
